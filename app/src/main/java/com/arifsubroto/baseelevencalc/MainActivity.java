@@ -2,6 +2,7 @@ package com.arifsubroto.baseelevencalc;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -97,6 +98,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_minus:
                 updateResultScreen("-");
+                Log.d("a", "asdasdasdasdasd");
                 break;
             case R.id.btn_multiply:
                 updateResultScreen("x");
@@ -119,19 +121,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
         String lastScreenResult = calculator_result.getText().toString();
         if(isOperator(text)){
             if(issetOperator(lastScreenResult)){
-                if(!validExpression(lastScreenResult).equals(null)){
+                if(isOperator(lastScreenResult.substring(lastScreenResult.length()-1, lastScreenResult.length()))){
+                    String changeOperator = lastScreenResult.substring(0, lastScreenResult.length()-1)+text;
+                    calculator_result.setText(changeOperator);
+                }else{
+                    String op = validExpression(lastScreenResult);
+                    String hasil = "";
+                    calculator_result.setText("hasil"+text);
+                }
+                /*if(!validExpression(lastScreenResult).equals(null)){
                     String op = validExpression(lastScreenResult);
                     String hasil = "";
                     calculator_result.setText("hasil"+text);
                 }else{
-                    String changeOperator = lastScreenResult.substring(0, lastScreenResult.length()-1) + text;
-                    calculator_result.setText(changeOperator);
-                }
+                    //String changeOperator = lastScreenResult.substring(0, lastScreenResult.length()-1);
+                    //calculator_result.setText("aaaa");
+                }*/
             }else if(!((calculator_result == null || lastScreenResult.equals("")))) {
                 calculator_result.setText(lastScreenResult + text);
             }
         }else{
-            if(!((calculator_result == null || lastScreenResult.equals("")) && text.equals("0"))) {
+            if(text.equals("0")){
+                if(calculator_result == null || lastScreenResult.equals("")){
+                    //stuck
+                }else if(issetOperator(lastScreenResult) && isOperator(lastScreenResult.substring(lastScreenResult.length()-1, lastScreenResult.length()))){
+                    calculator_result.setText("gak iso");
+                }else{
+                    calculator_result.setText(lastScreenResult + text);
+                }
+            }else{
                 calculator_result.setText(lastScreenResult + text);
             }
         }
@@ -152,7 +170,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private String validExpression(String exp){
         if (exp.split("\\+").length == 2) {
-            return "+";
+            calculator_result.setText("masuk");
         }else if (exp.split("\\-").length == 2) {
             return "-";
         }else if (exp.split("x").length == 2) {
