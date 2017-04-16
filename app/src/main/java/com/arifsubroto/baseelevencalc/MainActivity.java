@@ -105,9 +105,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 updateResultScreen("%");
                 break;
             case R.id.btn_equal:
-                //calculator_result.setText((calculator_result.getText().toString()).charAt((calculator_result.getText().toString()).length()-1));
-                String a = makeString(calculator_result.getText());
-                calculator_result.setText(a.length());
+               // calculator_result.setText(bisaDiHitung(calculator_result.getText().toString()));
                 break;
             case R.id.btn_clear:
                 calculator_result.setText("");
@@ -120,7 +118,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void updateResultScreen(String text){
         String lastScreenResult = calculator_result.getText().toString();
         if(isOperator(text)){
-            if(!((calculator_result == null || lastScreenResult.equals("")))) {
+            if(issetOperator(lastScreenResult)){
+                if(!validExpression(lastScreenResult).equals(null)){
+                    String op = validExpression(lastScreenResult);
+                    String hasil = "";
+                    calculator_result.setText("hasil"+text);
+                }else{
+                    String changeOperator = lastScreenResult.substring(0, lastScreenResult.length()-1) + text;
+                    calculator_result.setText(changeOperator);
+                }
+            }else if(!((calculator_result == null || lastScreenResult.equals("")))) {
                 calculator_result.setText(lastScreenResult + text);
             }
         }else{
@@ -128,14 +135,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 calculator_result.setText(lastScreenResult + text);
             }
         }
-
-        /*if(calculator_result == null || calculator_result.getText().equals("")){
-            calculator_result.setText("Arif");
-            return;
-        }*/
-
-        //String lastScreenResult = ((calculator_result.getText().toString() == null) ? "" : calculator_result.getText().toString());
-        //calculator_result.setText(lastScreenResult + text);
     }
 
     private boolean isOperator(String x){
@@ -144,41 +143,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return false;
     }
 
-    private boolean adaOperator(String exp) {
+    private boolean issetOperator(String exp) {
         if ((exp.indexOf('+') > 0) || (exp.indexOf('-') > 0) || (exp.indexOf('x') > 0) || (exp.indexOf('%') > 0)){
-            calculator_result.setText("ada operator");
             return true;
         }
-        calculator_result.setText("tidak ada operator");
         return false;
     }
 
-    private boolean canEvaluate(String exp){
-        String regex = "(?<=op)|(?=op)".replace("op", "[-+*/()]");
-        // actual regex becomes (?<=[-+*/()])|(?=[-+*/()])
-
-        calculator_result.setText(java.util.Arrays.toString(
-                exp.split(regex)
-        ));
-        return true;
-    }
-
-    private String bisaDiHitung(String exp){
-        if (exp.split("+").length == 2) {
+    private String validExpression(String exp){
+        if (exp.split("\\+").length == 2) {
             return "+";
-        }else if (exp.split("-").length == 2) {
+        }else if (exp.split("\\-").length == 2) {
             return "-";
         }else if (exp.split("x").length == 2) {
             return "x";
         }else if (exp.split("%").length == 2) {
             return "%";
         }
-        return "Tidak";
-    }
-
-    private String makeString(CharSequence charSequence){
-        final StringBuilder sb = new StringBuilder(charSequence.length());
-        sb.append(charSequence);
-        return sb.toString();
+        return null;
     }
 }
