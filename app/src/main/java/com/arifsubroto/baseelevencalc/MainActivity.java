@@ -107,7 +107,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 updateResultScreen("%");
                 break;
             case R.id.btn_equal:
-               // calculator_result.setText(bisaDiHitung(calculator_result.getText().toString()));
+                String op = validExpression(calculator_result.getText().toString());
+                String hasil = doCalc(calculator_result.getText().toString(), op);
+                calculator_result.setText(hasil);
                 break;
             case R.id.btn_clear:
                 calculator_result.setText("");
@@ -126,8 +128,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     calculator_result.setText(changeOperator);
                 }else{
                     String op = validExpression(lastScreenResult);
-                    String hasil = "";
-                    calculator_result.setText("hasil"+text);
+                    String hasil = doCalc(lastScreenResult, op);
+                    calculator_result.setText(hasil+text);
                 }
                 /*if(!validExpression(lastScreenResult).equals(null)){
                     String op = validExpression(lastScreenResult);
@@ -145,7 +147,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 if(calculator_result == null || lastScreenResult.equals("")){
                     //stuck
                 }else if(issetOperator(lastScreenResult) && isOperator(lastScreenResult.substring(lastScreenResult.length()-1, lastScreenResult.length()))){
-                    calculator_result.setText("gak iso");
+                    //stuck
                 }else{
                     calculator_result.setText(lastScreenResult + text);
                 }
@@ -170,7 +172,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private String validExpression(String exp){
         if (exp.split("\\+").length == 2) {
-            calculator_result.setText("masuk");
+            return "+";
         }else if (exp.split("\\-").length == 2) {
             return "-";
         }else if (exp.split("x").length == 2) {
@@ -179,5 +181,60 @@ public class MainActivity extends Activity implements View.OnClickListener {
             return "%";
         }
         return null;
+    }
+
+    private String doCalc(String exp, String opt){
+        String result = "";
+        int bil_1, bil_2;
+        String bil[];
+        switch (opt){
+            case "+":
+                bil = exp.split("\\+");
+                result = do_base11_calc(bil[0], bil[1], "+");
+                break;
+            case "-":
+                bil = exp.split("\\-");
+                result = do_base11_calc(bil[0], bil[1], "-");
+                break;
+            case "x":
+                bil = exp.split("x");
+                result = do_base11_calc(bil[0], bil[1], "x");
+                break;
+            case "%":
+                bil = exp.split("%");
+                result = do_base11_calc(bil[0], bil[1], "%");
+                break;
+            default:
+                result = "0";
+        }
+        return result;
+    }
+
+    private String do_base11_calc(String bil_1, String bil_2, String opt){
+        String result = "";
+        int temp;
+        int b1 = Integer.parseInt(BaseConverter.convertToBase(bil_1, 11, 10));
+        int b2 = Integer.parseInt(BaseConverter.convertToBase(bil_2, 11, 10));
+        switch (opt){
+            case "+":
+                temp = b1+b2;
+                result = BaseConverter.convertToBase(temp+"", 10, 11);
+                break;
+            case "-":
+                temp = b1-b2;
+                result = BaseConverter.convertToBase(temp+"", 10, 11);
+                break;
+            case "x":
+                temp = b1*b2;
+                result = BaseConverter.convertToBase(temp+"", 10, 11);
+                break;
+            case "%":
+                temp = b1%b2;
+                result = BaseConverter.convertToBase(temp+"", 10, 11);
+                break;
+            default:
+                result = "0";
+        }
+        return result;
     }
 }
