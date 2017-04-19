@@ -13,10 +13,11 @@ public class BaseConverter {
         // 212 = (2 * 32) + (1 * 31) + (2 * 30)
 
         public static String convertToBase(String num, int fromBase, int toBase){
-            // Convert to decimal
             if(num.contains("-")){
                 return "negative";
             }
+
+            // Convert to decimal
             int dec = Integer.parseInt(toBase10(num, fromBase));
 
             // Convert to base K from decimal

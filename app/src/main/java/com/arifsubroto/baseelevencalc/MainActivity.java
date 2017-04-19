@@ -228,7 +228,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case "-":
                 temp = b1-b2;
-                //result = temp+"";
                 result = BaseConverter.convertToBase(temp+"", 10, 11);
                 break;
             case "x":
