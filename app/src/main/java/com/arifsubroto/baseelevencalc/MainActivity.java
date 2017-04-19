@@ -17,6 +17,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         calculator_result = (TextView) findViewById(R.id.calculator_result);
+        if(savedInstanceState != null){
+            calculator_result.setText(savedInstanceState.getString("last_screen_result"));
+        }
 
         Button btn_0 = (Button) findViewById(R.id.btn_0);
         btn_0.setOnClickListener(this);
@@ -107,9 +110,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 updateResultScreen("%");
                 break;
             case R.id.btn_equal:
-                String op = validExpression(calculator_result.getText().toString());
-                String hasil = doCalc(calculator_result.getText().toString(), op);
-                calculator_result.setText(hasil);
+                String lastScreen = calculator_result.getText().toString();
+                if(issetOperator(lastScreen) && !isOperator(lastScreen.substring(lastScreen.length()-1, lastScreen.length()))){
+                    String op = validExpression(calculator_result.getText().toString());
+                    String hasil = doCalc(calculator_result.getText().toString(), op);
+                    calculator_result.setText(hasil);
+                }
                 break;
             case R.id.btn_clear:
                 calculator_result.setText("");
@@ -236,5 +242,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 result = "0";
         }
         return result;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("last_screen_result", calculator_result.getText().toString());
     }
 }
