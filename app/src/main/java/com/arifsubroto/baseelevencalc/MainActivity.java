@@ -218,7 +218,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private String do_base11_calc(String bil_1, String bil_2, String opt){
         String result = "";
-        int temp;
+        int temp = 0;
         int b1 = Integer.parseInt(BaseConverter.convertToBase(bil_1, 11, 10));
         int b2 = Integer.parseInt(BaseConverter.convertToBase(bil_2, 11, 10));
         switch (opt){
@@ -228,6 +228,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case "-":
                 temp = b1-b2;
+                //result = temp+"";
                 result = BaseConverter.convertToBase(temp+"", 10, 11);
                 break;
             case "x":

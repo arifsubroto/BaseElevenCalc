@@ -14,6 +14,9 @@ public class BaseConverter {
 
         public static String convertToBase(String num, int fromBase, int toBase){
             // Convert to decimal
+            if(num.contains("-")){
+                return "negative";
+            }
             int dec = Integer.parseInt(toBase10(num, fromBase));
 
             // Convert to base K from decimal
