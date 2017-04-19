@@ -1,5 +1,7 @@
 package com.arifsubroto.baseelevencalc;
 
+import android.widget.Toast;
+
 /**
  * Created by LabTIA-42 on 16/04/2017.
  */
@@ -14,7 +16,7 @@ public class BaseConverter {
 
         public static String convertToBase(String num, int fromBase, int toBase){
             if(num.contains("-")){
-                return "negative";
+                return "";
             }
 
             // Convert to decimal

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -201,6 +202,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case "-":
                 bil = exp.split("\\-");
                 result = do_base11_calc(bil[0], bil[1], "-");
+                if(result == ""){
+                    Toast.makeText(getApplicationContext(),"Can't evaluate",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case "x":
                 bil = exp.split("x");
